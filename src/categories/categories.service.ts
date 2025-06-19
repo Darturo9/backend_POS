@@ -22,7 +22,7 @@ export class CategoriesService {
     return this.categoryRepository.find()
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, products? : boolean) {
     const category = await this.categoryRepository.findOneBy({id})
     if (!category) {
       throw new NotFoundException("la categoria no existe...")
