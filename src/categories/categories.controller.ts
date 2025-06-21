@@ -22,7 +22,7 @@ export class CategoriesController {
   @Get(':id')
   findOne(
     @Param('id', IdValidationPipe) id: string,
-    @Query('products') products?: boolean
+    @Query('products') products?: string
   ) {
     return this.categoriesService.findOne(+id,products);
   }
