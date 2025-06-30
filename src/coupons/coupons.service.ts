@@ -72,7 +72,7 @@ export class CouponsService {
     }
 
     return {
-      message: "Cupón Valido",
+      message: "Cupón Válido",
       ...coupon
     }
 
