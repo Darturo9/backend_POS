@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Role } from '../role.enum';
+import { Address } from '../../addresses/entities/address.entity';
+import { Phone } from '../../phones/entities/phone.entity';
 
 @Entity()
 export class User {
@@ -17,4 +19,10 @@ export class User {
 
   @Column({ type: 'varchar', length: 20 })
   role: Role;
+
+  @OneToMany(() => Address, (address) => address.user, { cascade: true })
+  addresses: Address[];
+
+  @OneToMany(() => Phone, (phone) => phone.user, { cascade: true })
+  phones: Phone[];
 }
