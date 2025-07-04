@@ -12,7 +12,7 @@ import { QueryFailedError } from 'typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     // Hashear la contraseña antes de guardar
@@ -51,6 +51,10 @@ export class UsersService {
       throw new NotFoundException('Usuario no encontrado');
     }
     return user;
+  }
+
+  async findByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

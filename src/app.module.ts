@@ -11,6 +11,7 @@ import { CouponsModule } from './coupons/coupons.module';
 import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { PhonesModule } from './phones/phones.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { PhonesModule } from './phones/phones.module';
     CouponsModule,
     UsersModule,
     AddressesModule,
-    PhonesModule
+    PhonesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
