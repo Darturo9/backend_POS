@@ -12,11 +12,14 @@ import { QueryFailedError } from 'typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
-    // Hashear la contraseña antes de guardar
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    // Hashear la contraseña antes de guardar, solo si se proporciona
+    let hashedPassword: string | null = null;
+    if (createUserDto.password) {
+      hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    }
     // Asignar rol por defecto si no viene
     const user = this.userRepository.create({
       ...createUserDto,
@@ -26,7 +29,10 @@ export class UsersService {
     try {
       return await this.userRepository.save(user);
     } catch (error) {
-      if (error instanceof QueryFailedError && (error as any).code === '23505') {
+      if (
+        error instanceof QueryFailedError &&
+        (error as any).code === '23505'
+      ) {
         // 23505 = unique_violation en Postgres
         const detail = (error as any).detail as string;
         if (detail.includes('email')) {
@@ -69,7 +75,11 @@ export class UsersService {
     return 'Usuario eliminado exitosamente';
   }
 
-  async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
+  async validatePassword(
+    plainPassword: string,
+    hashedPassword: string | null,
+  ): Promise<boolean> {
+    if (!hashedPassword) return false;
     return bcrypt.compare(plainPassword, hashedPassword);
   }
 }
